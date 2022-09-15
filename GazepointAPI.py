@@ -18,17 +18,42 @@ HOST = '127.0.0.1'
 PORT = 4242
 ADDRESS = (HOST, PORT)
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(ADDRESS)
+# s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# s.connect(ADDRESS)
 
-s.send(str.encode('<SET ID="ENABLE_SEND_CURSOR" STATE="1" />\r\n'))
-s.send(str.encode('<SET ID="ENABLE_SEND_POG_FIX" STATE="1" />\r\n'))
-s.send(str.encode('<SET ID="ENABLE_SEND_DATA" STATE="1" />\r\n'))
+# s.send(str.encode('<SET ID="ENABLE_SEND_CURSOR" STATE="1" />\r\n'))
+# s.send(str.encode('<SET ID="ENABLE_SEND_POG_FIX" STATE="1" />\r\n'))
+# s.send(str.encode('<SET ID="ENABLE_SEND_DATA" STATE="1" />\r\n'))
 
 
 
-while 1:
-    rxdat = s.recv(1024)    
-    print(bytes.decode(rxdat))
+# while 1:
+#     rxdat = s.recv(1024)    
+#     print(bytes.decode(rxdat))
 
-s.close()
+# s.close()
+
+eye_client = None
+# startup function
+def connect_to_eye_tracker() :
+    global eye_client
+    # establish connection
+    eye_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    eye_client.connect(ADDRESS)
+    print("[STARTING] Established connection with eye tracker.")
+    # send which data points are expected in every record 
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_CURSOR" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_POG_FIX" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_DATA" STATE="1" />\r\n'))
+
+# get next line of data and return it
+def get_data_from_eye_tracker(b = 1024):
+    rxdat = eye_client.recv(b)
+    data = bytes.decode(rxdat)
+    print(f"[DATA FROM EYE-TRACKER] {data}")
+    return data
+
+# disconnect from the eye tracker
+def disconnect_from_eye_tracker():
+    print("[CLOSING] Closing connection with eye tracker.")
+    eye_client.close()
