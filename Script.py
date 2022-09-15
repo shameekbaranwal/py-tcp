@@ -14,8 +14,8 @@
 #           >> empty the collection[] array
 # teye:
 #       > while 1:
-#       > grab the latest chunk of 240 bytes
-#       > if collecting is true, then insert it into collection[], otherwise just ignore it.
+#       	>> grab the latest chunk of 240 bytes
+#       	>> if collecting is true, then insert it into collection[], otherwise just ignore it.
 
 from GazepointAPI import connect_to_eye_tracker, get_data_from_eye_tracker, disconnect_from_eye_tracker
 from EPrimeAPI import start_eprime_server, get_data_from_eprime, disconnect_from_eprime
@@ -26,18 +26,19 @@ collections = []
 
 
 def handle_eprime():
-  (signal, student_id, session_number, obj, image_number, image_type, expected_characterization, actual_characterization) = get_data_from_eprime()
-  global collections, collecting
-  
-  if not collecting:
-    if signal == "START":
-      collecting = True
-      collections = []
-  else:
-    file = open(f"{student_id}_{session_number}_{obj}_{image_number}_{image_type}_{expected_characterization}{actual_characterization}.txt", "x")
-    for line in collections:
-      file.write(line)
-    file.close()
+  while 1:
+    (signal, student_id, session_number, obj, image_number, image_type, expected_characterization, actual_characterization) = get_data_from_eprime()
+    global collections, collecting
+    
+    if not collecting:
+      if signal == "START":
+        collecting = True
+        collections = []
+    else:
+      file = open(f"{student_id}_{session_number}_{obj}_{image_number}_{image_type}_{expected_characterization}{actual_characterization}.txt", "x")
+      for line in collections:
+        file.write(line)
+      file.close()
   pass
 
 def handle_eyetracker():
