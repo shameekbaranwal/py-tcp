@@ -6,43 +6,6 @@ ADDRESS = (HOST, PORT)
 OPTION_LENGTH = 1
 FORMAT = 'utf-8'
 
-# epr_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# epr_server.bind(ADDRESS)
-
-# eyetrackerclient = None
-# collecting = False
-# collection = []
-
-# def collect_one_XML_record():
-#     print("peepeepoopoo")
-    
-# def handle_client(conn, addr):
-#   option = conn.recv(OPTION_LENGTH).decode(FORMAT)
-#   option = str(option)
-  
-#   if option:
-#     if option == "1":
-#       # start
-#       collecting = True
-#       collection = []
-#     else:  
-#       # stop
-#       collecting = False
-#       collection = []
-    
-#   if collecting:
-#     collection.insert(collect_one_XML_record())
-    
-
-
-# def start():
-#   epr_server.listen()
-#   print(f"[STARTING] Server listening on {HOST}:{PORT}")
-#   # connect to the eye-tracker here
-#   conn, addr = epr_server.accept()
-#   handle_client(conn, addr)
-#   pass
-
 epr_server = None
 conn = None 
 addr = None
