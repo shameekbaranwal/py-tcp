@@ -12,23 +12,24 @@
 
 import socket
 
-# Host machine IP
-HOST = '127.0.0.1'
-# Gazepoint Port
-PORT = 4242
-ADDRESS = (HOST, PORT)
+def eye_tracker_client():
+    # Host machine IP
+    HOST = '127.0.0.1'
+    # Gazepoint Port
+    PORT = 4242
+    ADDRESS = (HOST, PORT)
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(ADDRESS)
+    et_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    et_client.connect(ADDRESS)
 
-s.send(str.encode('<SET ID="ENABLE_SEND_CURSOR" STATE="1" />\r\n'))
-s.send(str.encode('<SET ID="ENABLE_SEND_POG_FIX" STATE="1" />\r\n'))
-s.send(str.encode('<SET ID="ENABLE_SEND_DATA" STATE="1" />\r\n'))
+    et_client.send(str.encode('<SET ID="ENABLE_SEND_CURSOR" STATE="1" />\r\n'))
+    et_client.send(str.encode('<SET ID="ENABLE_SEND_POG_FIX" STATE="1" />\r\n'))
+    et_client.send(str.encode('<SET ID="ENABLE_SEND_DATA" STATE="1" />\r\n'))
+    
+    return et_client
 
+    # while 1:
+    #     rxdat = et_client.recv(1024)    
+    #     print(bytes.decode(rxdat))
 
-
-while 1:
-    rxdat = s.recv(1024)    
-    print(bytes.decode(rxdat))
-
-s.close()
+    # et_client.close()
