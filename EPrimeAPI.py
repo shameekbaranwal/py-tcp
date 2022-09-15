@@ -15,6 +15,7 @@ def start_eprime_server():
   global epr_server
   epr_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   epr_server.bind(ADDRESS)
+  epr_server.listen()
   print(f"[STARTING] E-Prime Server listening on {HOST}:{PORT}")
   pass
 
