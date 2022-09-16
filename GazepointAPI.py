@@ -35,7 +35,7 @@ def connect_to_eye_tracker() :
 def get_data_from_eye_tracker(b = 1024):
     rxdat = eye_client.recv(b)
     data = bytes.decode(rxdat)
-    print(f"[DATA FROM EYE-TRACKER] {data}")
+    # print(f"[DATA FROM EYE-TRACKER] {data}")
     return data
 
 # disconnect from the eye tracker

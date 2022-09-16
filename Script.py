@@ -46,6 +46,7 @@ def handle_eprime():
         for line in collections:
           file.write(line)
         file.close()
+        print("[FILE CLOSED]")
   pass
 
 def handle_eyetracker():
@@ -59,7 +60,7 @@ def handle_eyetracker():
 tepr = threading.Thread(target=handle_eprime)
 teye = threading.Thread(target=handle_eyetracker)
 
-start_eprime_server()
 connect_to_eye_tracker()
+start_eprime_server()
 tepr.start()
 teye.start()

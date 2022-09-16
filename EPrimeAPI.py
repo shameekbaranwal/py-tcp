@@ -23,6 +23,7 @@ def start_eprime_server():
 def connect_to_eprime():
   global conn, addr
   conn, addr = epr_server.accept()
+  print("[CONNECTED] E-Prime client connected to server")
 	
 # handle the client, and return the parsed data (<start/stop>, <student id>, <session number>, <robot/fish>, <image number>, <image type>, <expected characterization>, <actual characterization>)
 def get_data_from_eprime():
@@ -30,9 +31,11 @@ def get_data_from_eprime():
     connect_to_eprime()
     
   epr_data = conn.recv(1024).decode(FORMAT)
+  
   if (epr_data):
     epr_data = epr_data.split("_")
     [signal, student_id, obj, image_number, image_type, categorization] = epr_data
+    print(f"[DATA FROM E-PRIME] signal:{signal} student_id:{student_id} image_number:{image_number} image_type:{image_type} categorization:{categorization}")
     return (signal, student_id, obj, image_number, image_type, categorization)
   return ()
   # return epr_data
