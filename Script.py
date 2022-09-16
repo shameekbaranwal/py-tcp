@@ -28,27 +28,31 @@ collections = []
 def handle_eprime():
   while 1:
     # (signal, student_id, session_number, obj, image_number, image_type, expected_characterization, actual_characterization) = get_data_from_eprime()
-    (signal, student_id, obj, image_number, image_type, categorization) = get_data_from_eprime()
-    global collections, collecting
+    data = get_data_from_eprime()
     
-    if not collecting:
-      if signal == "START":
-        collecting = True
-        collections = []
-    else:
-      file = open(f"{student_id}_{obj}_{image_number}_{image_type}_{categorization}.txt", "x")
-      collecting = False
-      print(collections)
-      for line in collections:
-        file.write(line)
-      file.close()
+    if (data):
+      (signal, student_id, obj, image_number, image_type, categorization) = data
+      
+      global collections, collecting
+      
+      if not collecting:
+        if signal == "START":
+          collecting = True
+          collections = []
+      else:
+        file = open(f"{student_id}_{obj}_{image_number}_{image_type}_{categorization}.txt", "x")
+        collecting = False
+        print(collections)
+        for line in collections:
+          file.write(line)
+        file.close()
   pass
 
 def handle_eyetracker():
   while 1:
     data = get_data_from_eye_tracker()
     if collecting:
-      collections.insert(data)
+      collections.append(data)
   pass
 
 
