@@ -28,15 +28,17 @@ collections = []
 def handle_eprime():
   while 1:
     # (signal, student_id, session_number, obj, image_number, image_type, expected_characterization, actual_characterization) = get_data_from_eprime()
-    data = get_data_from_eprime()
+    (signal, student_id, obj, image_number, image_type, categorization) = get_data_from_eprime()
     global collections, collecting
     
     if not collecting:
-      # if signal == "START":
-      collecting = True
-      collections = []
+      if signal == "START":
+        collecting = True
+        collections = []
     else:
-      file = open(f"{data}.txt", "x")
+      file = open(f"{student_id}_{obj}_{image_number}_{image_type}_{categorization}.txt", "x")
+      collecting = False
+      print(collections)
       for line in collections:
         file.write(line)
       file.close()

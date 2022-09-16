@@ -30,12 +30,12 @@ def get_data_from_eprime():
     connect_to_eprime()
     
   epr_data = conn.recv(1024).decode(FORMAT)
-  # if (epr_data):
-  #   epr_data = epr_data.split("_")
-  #   [signal, student_id, session_number, obj, image_number, image_type, expected_characterization, actual_characterization] = epr_data
-  #   return (signal, student_id, session_number, obj, image_number, image_type, expected_characterization, actual_characterization)
-  # return []
-  return epr_data
+  if (epr_data):
+    epr_data = epr_data.split("_")
+    [signal, student_id, obj, image_number, image_type, categorization] = epr_data
+    return (signal, student_id, obj, image_number, image_type, categorization)
+  return []
+  # return epr_data
 
 # disconnect from the client
 def disconnect_from_eprime():
