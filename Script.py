@@ -21,6 +21,7 @@ from GazepointAPI import connect_to_eye_tracker, get_data_from_eye_tracker, disc
 from EPrimeAPI import start_eprime_server, get_data_from_eprime, disconnect_from_eprime
 import threading
 import atexit
+import os
 
 collecting = False
 collections = []
@@ -32,7 +33,10 @@ def handle_eprime():
     data = get_data_from_eprime()
     
     if (data):
-      (signal, student_id, obj, image_number, image_type, categorization) = data
+      (signal, student_id, trial_block, obj, image_number, image_type, categorization) = data
+      
+      print(f"[DATA FROM E-PRIME] signal:{signal} student_id:{student_id} trial_block:{trial_block} image_number:{image_number} image_type:{image_type} categorization:{categorization}")
+      
       
       global collections, collecting
       
@@ -40,14 +44,26 @@ def handle_eprime():
         if signal == "START":
           collecting = True
           collections = []
+          print("[COLLECTING] Started collecting data.")
       else:
-        file = open(f"{student_id}_{obj}_{image_number}_{image_type}_{categorization}.txt", "x")
+        if not os.path.exists(f".\\{student_id}_{obj}"):
+          os.mkdir(f".\\{student_id}_{obj}")
+          print("[FOLDER CREATED] Created folder for student : ", student_id, " and object : ", obj)
+        
         collecting = False
-        print(collections)
+        
+        # store the data in csv not txt
+        filename = f".\\{student_id}_{obj}\\{student_id}_{trial_block}_{obj}_{image_number}_{image_type}_{categorization}.txt"
+        file = open(filename, "x")
+        print("[FILE CREATED] Created file for for session : ", filename)
+        
         for line in collections:
           file.write(line)
+        print("[FILE WRITTEN] Wrote data to file.")
+        
         file.close()
         print("[FILE CLOSED]")
+        print("----------------------------------------")
   pass
 
 def handle_eyetracker():
@@ -59,15 +75,19 @@ def handle_eyetracker():
 
 def exit_handler():
   disconnect_from_eprime()
+  print("[DISCONNECTED] Disconnected from E-Prime")
   disconnect_from_eye_tracker()
-  print("[CONNECTIONS CLOSED] Disconnected from eye-tracker and e-prime.")
-
+  print("[DISCONNECTED] Disconnected from Eye-Tracker")
 
 tepr = threading.Thread(target=handle_eprime)
 teye = threading.Thread(target=handle_eyetracker)
 atexit.register(exit_handler)
 
+ADDRESS = start_eprime_server()
+print(f"[STARTING] Started E-Prime server on {ADDRESS}.")
+
 connect_to_eye_tracker()
-start_eprime_server()
+print("[STARTING] Established client's connection with Eye Tracker server.")
+
 tepr.start()
 teye.start()

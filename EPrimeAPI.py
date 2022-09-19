@@ -16,8 +16,7 @@ def start_eprime_server():
   epr_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   epr_server.bind(ADDRESS)
   epr_server.listen()
-  print(f"[STARTING] E-Prime Server listening on {HOST}:{PORT}")
-  pass
+  return f"{HOST}:{PORT}"
 
 # connect to eprime client
 def connect_to_eprime():
@@ -25,7 +24,7 @@ def connect_to_eprime():
   conn, addr = epr_server.accept()
   print("[CONNECTED] E-Prime client connected to server")
 	
-# handle the client, and return the parsed data (<start/stop>, <student id>, <session number>, <robot/fish>, <image number>, <image type>, <expected characterization>, <actual characterization>)
+# handle the client, and return the parsed data (<start/stop>, <student id>, <trial block>, <robot/fish>, <image number>, <image type>, <categorization>)
 def get_data_from_eprime():
   if conn == None:
     connect_to_eprime()
@@ -34,11 +33,9 @@ def get_data_from_eprime():
   
   if (epr_data):
     epr_data = epr_data.split("_")
-    [signal, student_id, obj, image_number, image_type, categorization] = epr_data
-    print(f"[DATA FROM E-PRIME] signal:{signal} student_id:{student_id} image_number:{image_number} image_type:{image_type} categorization:{categorization}")
-    return (signal, student_id, obj, image_number, image_type, categorization)
+    [signal, student_id, trial_block, obj, image_number, image_type, categorization] = epr_data
+    return (signal, student_id, trial_block, obj, image_number, image_type, categorization)
   return ()
-  # return epr_data
 
 # disconnect from the client
 def disconnect_from_eprime():

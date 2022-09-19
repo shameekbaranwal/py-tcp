@@ -25,11 +25,27 @@ def connect_to_eye_tracker() :
     # establish connection
     eye_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     eye_client.connect(ADDRESS)
-    print("[STARTING] Established connection with eye tracker.")
     # send which data points are expected in every record 
     eye_client.send(str.encode('<SET ID="ENABLE_SEND_CURSOR" STATE="1" />\r\n'))
     eye_client.send(str.encode('<SET ID="ENABLE_SEND_POG_FIX" STATE="1" />\r\n'))
     eye_client.send(str.encode('<SET ID="ENABLE_SEND_DATA" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_COUNTER" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_TIME" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_TIME_TICK" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_POG_LEFT" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_POG_RIGHT" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_POG_BEST" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_PUPIL_LEFT" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_PUPIL_RIGHT" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_EYE_LEFT" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_EYE_RIGHT" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_BLINK" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_PUPILMM" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_DIAL" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_GSR" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_HR" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_TTL" STATE="1" />\r\n'))
+    eye_client.send(str.encode('<SET ID="ENABLE_SEND_PIX" STATE="1" />\r\n'))
 
 # get next line of data and return it
 def get_data_from_eye_tracker(b = 1024):
@@ -40,5 +56,4 @@ def get_data_from_eye_tracker(b = 1024):
 
 # disconnect from the eye tracker
 def disconnect_from_eye_tracker():
-    print("[CLOSING] Closing connection with eye tracker.")
     eye_client.close()
