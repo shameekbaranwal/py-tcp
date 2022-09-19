@@ -20,6 +20,7 @@
 from GazepointAPI import connect_to_eye_tracker, get_data_from_eye_tracker, disconnect_from_eye_tracker
 from EPrimeAPI import start_eprime_server, get_data_from_eprime, disconnect_from_eprime
 import threading
+import atexit
 
 collecting = False
 collections = []
@@ -56,9 +57,15 @@ def handle_eyetracker():
       collections.append(data)
   pass
 
+def exit_handler():
+  disconnect_from_eprime()
+  disconnect_from_eye_tracker()
+  print("[CONNECTIONS CLOSED] Disconnected from eye-tracker and e-prime.")
+
 
 tepr = threading.Thread(target=handle_eprime)
 teye = threading.Thread(target=handle_eyetracker)
+atexit.register(exit_handler)
 
 connect_to_eye_tracker()
 start_eprime_server()
