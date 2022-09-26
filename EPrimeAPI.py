@@ -24,7 +24,8 @@ def connect_to_eprime():
   conn, addr = epr_server.accept()
   print("[CONNECTED] E-Prime client connected to server")
 	
-# handle the client, and return the parsed data (<start/stop>, <student id>, <trial block>, <robot/fish>, <image number>, <image type>, <categorization>)
+# handle the client, and return the parsed data [START/STOP]_[Subject]_[ExperimentNumber]_[Name]_[Age]_[Sex]_[List1.Cycle]_[Experiment]_[SlNo]_[Hands][Head][Antenna][Legs][Chest]_[Categorization]
+
 def get_data_from_eprime():
   if conn == None:
     connect_to_eprime()
@@ -33,8 +34,8 @@ def get_data_from_eprime():
   
   if (epr_data):
     epr_data = epr_data.split("_")
-    [signal, student_id, trial_block, obj, image_number, image_type, categorization] = epr_data
-    return (signal, student_id, trial_block, obj, image_number, image_type, categorization)
+    [signal, subject, experiment_number, name, age, sex, list_cycle, experiment, serial_number, img_code, categorization] = epr_data
+    return (signal, subject, experiment_number, name, age, sex, list_cycle, experiment, serial_number, img_code, categorization)
   return ()
 
 # disconnect from the client

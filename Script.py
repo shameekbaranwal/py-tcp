@@ -25,17 +25,25 @@ import os
 
 collecting = False
 collections = []
-
+FOLDER_NAMES = [
+                "FishCongruent", 
+                "FishIncongruent", 
+                "RobotCongruent", 
+                "RobotIncongruent", 
+                "FishSingleFeatureInstruction", 
+                "FishMultiFeatureInstruction", 
+                "RobotSingleFeatureInstruction", 
+                "RobotMultiFeatureInstruction"
+              ]
 
 def handle_eprime():
   while 1:
-    # (signal, student_id, session_number, obj, image_number, image_type, expected_characterization, actual_characterization) = get_data_from_eprime()
     data = get_data_from_eprime()
     
     if (data):
-      (signal, student_id, trial_block, obj, image_number, image_type, categorization) = data
+      (signal, subject, experiment_number, name, age, sex, list_cycle, experiment, serial_number, img_code, categorization) = data
       
-      print(f"[DATA FROM E-PRIME] signal:{signal} student_id:{student_id} trial_block:{trial_block} image_number:{image_number} image_type:{image_type} categorization:{categorization}")
+      print(f"[DATA FROM E-PRIME] signal:{signal} subject:{subject} experiment_number:{experiment_number} name:{name} age:{age} sex:{sex} list_cycle:{list_cycle} experiment:{experiment} serial_number:{serial_number} img_code:{img_code} categorization:{categorization}")
       
       
       global collections, collecting
@@ -46,14 +54,14 @@ def handle_eprime():
           collections = []
           print("[COLLECTING] Started collecting data.")
       else:
-        if not os.path.exists(f".\\{student_id}_{obj}"):
-          os.mkdir(f".\\{student_id}_{obj}")
-          print("[FOLDER CREATED] Created folder for student : ", student_id, " and object : ", obj)
+        if not os.path.exists(f".\\{FOLDER_NAMES[experiment_number]}\\{subject}_{experiment}"):
+          os.mkdir(f".\\{subject}_{experiment}")
+          print("[FOLDER CREATED] Created folder for subject : ", subject, " and object : ", experiment)
         
         collecting = False
         
-        # store the data in csv not txt
-        filename = f".\\{student_id}_{obj}\\{student_id}_{trial_block}_{obj}_{image_number}_{image_type}_{categorization}.txt"
+        # store the data in csv not xml
+        filename = f".\\{FOLDER_NAMES[experiment_number]}\\{subject}_{experiment}\\{subject}_{experiment_number}_{name}_{age}_{sex}_{list_cycle}_{experiment}_{serial_number}_{img_code}_{categorization}.xml"
         file = open(filename, "x")
         print("[FILE CREATED] Created file for for session : ", filename)
         
