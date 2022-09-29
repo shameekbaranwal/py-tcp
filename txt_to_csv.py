@@ -9,7 +9,11 @@ path=".\\Text_files"       #Path of the folder which contains text files
 
 for file in os.listdir(path): 
     f = open(f"{path}\\{file}", "r") 
-    (signal, subject, experiment_number, name, age, sex, list_cycle, experiment, serial_number, img_code, categorization) = str(file)
+    filename=os.path.splitext(file)[0]
+   
+    attribute_destructure = filename.split("_")
+    [subject, experiment_number, name, age, sex, list_cycle, experiment, serial_number, img_code, categorization] = attribute_destructure    
+    
     for item in attributes:  #creating array for each of the attribute
         vars()[item]=[]
 
@@ -29,7 +33,7 @@ for file in os.listdir(path):
         df[item]=vars()[item];
   
                
-    df.to_csv("\\{subject}_{experiment_number}_{name}_{age}_{sex}_{list_cycle}_{experiment}_{serial_number}_{img_code}_{categorization}.csv");    
+    df.to_csv(f".\\{subject}_{experiment_number}_{name}_{age}_{sex}_{list_cycle}_{experiment}_{serial_number}_{img_code}_{categorization}.csv", index=False);    
 
 
 
