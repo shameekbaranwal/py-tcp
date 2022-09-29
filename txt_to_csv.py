@@ -9,7 +9,8 @@ for item in attributes:  #creating array for each of the attribute
 path=".\\Text_files"       #Path of the folder which contains text files
 
 for file in os.listdir(path): 
-    f = open(f".\\Text_files\\{file}", "r") 
+    f = open(f"{path}\\{file}", "r") 
+    
     
     for line in f.readlines():  #reading line by line        
         
@@ -18,16 +19,18 @@ for file in os.listdir(path):
         for i in range(1,length-1):
             temp=new_arr[i].split("=")
             vars()[temp[0]].append(float(temp[1][1:-1]));
+        
+        # Creating Empty DataFrame and Storing it in variable df
+        df = pd.DataFrame()
 
-
-# Creating Empty DataFrame and Storing it in variable df
-df = pd.DataFrame()
-
-for item in attributes:
-    df[item]=vars()[item];
+    for item in attributes:
+        df[item]=vars()[item];
   
                
-df.to_csv("test123456.csv");
+    df.to_csv("test123456.csv");    
+
+
+
 
 
 #print(vars()[attributes[0]])
