@@ -3,14 +3,16 @@ import pandas as pd
 
 attributes=["CNT","TIME","TIME_TICK","FPOGX","FPOGY","FPOGS","FPOGD","FPOGID","FPOGV","LPOGX","LPOGY","LPOGV","RPOGX","RPOGY","RPOGV","BPOGX","BPOGY","BPOGV","LPCX","LPCY","LPD","LPS","LPV","RPCX","RPCY","RPD","RPS","RPV","LEYEX","LEYEY","LEYEZ","LPUPILD","LPUPILV","REYEX","REYEY","REYEZ","RPUPILD","RPUPILV","CX","CY","CS","BKID","BKDUR","BKPMIN","LPMM","LPMMV","RPMM","RPMMV","DIAL","DIALV","GSR","GSRV","HR","HRV","TTL0","TTL1","TTLV","PIXX","PIXY","PIXS","PIXV"]
 
-for item in attributes:  #creating array for each of the attribute
-    vars()[item]=[]
+
     
 path=".\\Text_files"       #Path of the folder which contains text files
 
 for file in os.listdir(path): 
     f = open(f"{path}\\{file}", "r") 
-    
+    (signal, subject, experiment_number, name, age, sex, list_cycle, experiment, serial_number, img_code, categorization) = str(file)
+    for item in attributes:  #creating array for each of the attribute
+        vars()[item]=[]
+
     
     for line in f.readlines():  #reading line by line        
         
@@ -21,13 +23,13 @@ for file in os.listdir(path):
             vars()[temp[0]].append(float(temp[1][1:-1]));
         
         # Creating Empty DataFrame and Storing it in variable df
-        df = pd.DataFrame()
+    df = pd.DataFrame()
 
     for item in attributes:
         df[item]=vars()[item];
   
                
-    df.to_csv("test123456.csv");    
+    df.to_csv("\\{subject}_{experiment_number}_{name}_{age}_{sex}_{list_cycle}_{experiment}_{serial_number}_{img_code}_{categorization}.csv");    
 
 
 
