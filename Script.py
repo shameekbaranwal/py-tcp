@@ -26,6 +26,7 @@ import os
 collecting = False
 collections = []
 FOLDER_NAMES = [
+                "",
                 "FishCongruent", 
                 "FishIncongruent", 
                 "RobotCongruent", 
@@ -42,6 +43,7 @@ def handle_eprime():
     
     if (data):
       (signal, subject, experiment_number, name, age, sex, list_cycle, experiment, serial_number, img_code, categorization) = data
+      experiment_number = int(experiment_number)
       
       print(f"[DATA FROM E-PRIME] signal:{signal} subject:{subject} experiment_number:{experiment_number} name:{name} age:{age} sex:{sex} list_cycle:{list_cycle} experiment:{experiment} serial_number:{serial_number} img_code:{img_code} categorization:{categorization}")
       
@@ -54,14 +56,15 @@ def handle_eprime():
           collections = []
           print("[COLLECTING] Started collecting data.")
       else:
-        if not os.path.exists(f".\\{FOLDER_NAMES[experiment_number]}\\{subject}_{experiment}"):
-          os.mkdir(f".\\{subject}_{experiment}")
+        folder_name = f"{name}_{subject}_{experiment}"
+        if not os.path.exists(f".\\{FOLDER_NAMES[experiment_number]}\\{folder_name}"):
+          os.mkdir(f".\\{FOLDER_NAMES[experiment_number]}\\{folder_name}")
           print("[FOLDER CREATED] Created folder for subject : ", subject, " and object : ", experiment)
         
         collecting = False
         
         # store the data in csv not xml
-        filename = f".\\{FOLDER_NAMES[experiment_number]}\\{subject}_{experiment}\\{subject}_{experiment_number}_{name}_{age}_{sex}_{list_cycle}_{experiment}_{serial_number}_{img_code}_{categorization}.xml"
+        filename = f".\\{FOLDER_NAMES[experiment_number]}\\{folder_name}\\{subject}_{experiment_number}_{name}_{age}_{sex}_{list_cycle}_{experiment}_{serial_number}_{img_code}_{categorization}.txt"
         file = open(filename, "x")
         print("[FILE CREATED] Created file for for session : ", filename)
         
